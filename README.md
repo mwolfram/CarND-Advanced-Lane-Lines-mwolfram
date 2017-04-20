@@ -146,6 +146,7 @@ Here's a [link to my video result](./project_video.mp4)
 Overall:
 
 * differnet code for different scenarios
+* settings overfit to videos seen here
 * no sanity checks
 * no fallback to sliding window
 * 
@@ -153,7 +154,17 @@ Overall:
 project_video:
 - no big issues, gradx of L space then sliding window then detect from prev, filtering with hist size 50
 
+challenge_video:
+- left and rgith lane lines were extracted separately 
+- left combination of thresholds of tttthe l and s spaces
+- right: combination of threshold of l space and abs sobel of l space with threshold
+- after that same functionality as in project video.
+
+harder chalenge.
+experiments with color spaces, but no real conclusion so far.
+problems: too much light , too little light, tight curves where lane lines often cannot even be seen, sometimes i see reflections of the car on the windshield
 
 
+* improvements: home-made video
 
 Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
