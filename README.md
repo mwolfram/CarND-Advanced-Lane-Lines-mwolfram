@@ -19,13 +19,17 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/undistort_output.png "Undistorted"
-[image2]: ./test_images/test1.jpg "Road Transformed"
-[image3]: ./examples/binary_combo_example.jpg "Binary Example"
-[image4]: ./examples/warped_straight_lines.jpg "Warp Example"
-[image5]: ./examples/color_fit_lines.jpg "Fit Visual"
-[image6]: ./examples/example_output.jpg "Output"
-[video1]: ./project_video.mp4 "Video"
+[sobel]: ./output_images/straight_lines1_sobel.jpg 
+[sw]: ./output_images/test2_sliding_window.jpg
+[persp]: ./output_images/straight_lines1_persp.jpg
+[thr]: ./output_images/straight_lines1_thresholdedL.jpg
+[undist_calib]: ./output_images/undistorted_calibration1.jpg
+[persp_sobel]: ./output_images/straight_lines1_persp_sobel.jpg
+[dprev]: ./output_images/test2_detect_from_previous.jpg
+[undist_straight]: ./output_images/undistorted_straight_lines1.jpg
+[persp_thr]: ./output_images/straight_lines1_persp_thresholdedL.jpg
+[orig_with_lane]: ./output_images/test2_lane_orig.jpg
+[video1]: ./project_video__out.mp4 "Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
 ### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
@@ -57,9 +61,10 @@ ret, mtx, dist, rvecs, tvecs = calibrate(9, 6)
 
 I start by preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world. Here I am assuming the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image.  Thus, `objp` is just a replicated array of coordinates, and `objpoints` will be appended with a copy of it every time I successfully detect all chessboard corners in a test image.  `imgpoints` will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.  
 
-I then used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to the test image using the `cv2.undistort()` function and obtained this result: 
+I then used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to test images using the `cv2.undistort()` function and obtained these results: 
 
-![alt text][image1]
+![alt text][undist_calib]
+![alt text][undist_straight]
 
 It's sufficient to perform this operation once after loading the notebook. I can then use the calibration coefficients for undistorting all images.
 
