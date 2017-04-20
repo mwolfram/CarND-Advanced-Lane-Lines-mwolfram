@@ -61,10 +61,11 @@ ret, mtx, dist, rvecs, tvecs = calibrate(9, 6)
 
 I start by preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world. Here I am assuming the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image.  Thus, `objp` is just a replicated array of coordinates, and `objpoints` will be appended with a copy of it every time I successfully detect all chessboard corners in a test image.  `imgpoints` will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.  
 
-I then used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to test images using the `cv2.undistort()` function and obtained these results: 
+I then used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to a test image using the `cv2.undistort()` function and obtained this result: 
 
-![alt text][undist_calib]
-![alt text][undist_straight]
+![Undistorted test image][undist_calib]
+*Undistorted test image*
+
 
 It's sufficient to perform this operation once after loading the notebook. I can then use the calibration coefficients for undistorting all images.
 
@@ -75,7 +76,9 @@ I use two separate pipelines for the project_video and the challenge_video. It t
 #### 1. Provide an example of a distortion-corrected image.
 
 To demonstrate this step, I will describe how I apply the distortion correction to one of the test images like this one:
-![alt text][image2]
+
+![Undistorted image of straight lane lines][undist_straight]
+*Undistorted image of straight lane lines*
 
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
@@ -91,9 +94,11 @@ TODO used where.
 
 I have an implementation of all techniques described in the course in the jupyter notebook, such as abs_sobel_thresh or mag_thresh. I effectively ended up using abs_sobel_thresh in most cases. What's also useful, especially for the challenge_video, is simply thresholding the values of certain color channels. This is done with the thresh function after extracting a color channel (as described in the previous section)
 
-TODO example of sobel, example of thresholded channel in challenge
+![Sobel in X direction, thresholded][sobel]
+*Sobel in X direction, thresholded*
 
-![alt text][image3]
+![L color channel, thresholded][thr]
+*L color channel, thresholded*
 
 #### 3. Describe how (and identify where in your code) you performed a perspective transform and provide an example of a transformed image.
 
@@ -107,7 +112,14 @@ DST_TF = np.float32([ [262.0, 720.0], [1042.0, 720.0], [1042.0, 0.0], [262.0, 0.
 
 I verified that my perspective transform was working as expected by drawing the `SRC_TF` and `DST_TF` points onto a test image and its warped counterpart to verify that the lines appear parallel in the warped image.
 
-![alt text][image4]
+![Straight lines image warped to birds-eye view][persp]
+*Straight lines image warped to birds-eye view*
+
+![Straight lines image warped to birds-eye view, after applying sobel][persp_sobel]
+*Straight lines image warped to birds-eye view, after applying sobel*
+
+![Straight lines image warped to birds-eye view, after applying threshold on L channel][persp_thr]
+*Straight lines image warped to birds-eye view, after applying threshold on L channel*
 
 For the inverse transformation I use the function `inverse_perspective_transform`
 
@@ -119,7 +131,11 @@ The lane line pixels that were identified, were then used to fit 2nd order polyn
 
 The following two images show the results of both types of calculations.
 
-![alt text][image5]
+![Sliding Window approach on test2.jpg][sw]
+*Sliding Window approach on test2.jpg*
+
+![Detecting from previous fits on test2.jpg][dprev]
+*Detecting from previous fits on test2.jpg*
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
@@ -137,7 +153,8 @@ The lane_offset is calculated by finding the bottom-most points of a fit in x di
 
 I implemented this step in the function `def draw_lane_undistorted(undistd, left_fit, right_fit):`. It takes an empty image and draws the polygon describing the lane in birds-eye view. Then this image is transformed back to the viewpoint of the vehicle camera and overlaid with the original undistorted image.
 
-![alt text][image6]
+![Resulting image with marked lane][orig_with_lane]
+*Resulting image with marked lane*
 
 ---
 
