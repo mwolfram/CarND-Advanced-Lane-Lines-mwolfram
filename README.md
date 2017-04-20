@@ -118,10 +118,15 @@ The following two images show the results of both types of calculations.
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
-I did this in lines # through # in my code in `my_other_file.py`
+These two calculations happen in `def measure_curvature(fit, img):`and in `lane_offset(left_fit, right_fit, img):`. The curvature calculation is taken from the course. I apply the following function to convert from polynomial coefficients to radius: 
 
-happens in `def measure_curvature(fit, img):`
-TODO
+```python
+px_curverad = ((1 + (2*fit[0]*y_eval + fit[1])**2)**1.5) / np.absolute(2*fit[0])
+```
+
+I do the same thing for the radius in meters, with a factor applied.
+
+The lane_offset is calculated by finding the bottom-most points of a fit in x direction for both lane lines, averaging between them to find the lane center and subtracting the actual center of the image. After applying the same conversion factor as before I get the offset in meters.
 
 #### 6. Provide an example image of your result plotted back down onto the road such that the lane area is identified clearly.
 
