@@ -86,9 +86,7 @@ At the beginning of my jupyter notebook, I load a toolkit that offers all these 
 
 ##### a. Color Transforms:
 
-For example the functions H(img), L(img) and S(img) provide greyscale representations of the 3 channels in the HLS color space. I used 
-
-TODO used where.
+For example the functions `H(img)`, `L(img)` and `S(img)` provide greyscale representations of the 3 channels in the HLS color space. I used the `L(img)` function before passing an image to the sobel filter. Also I postprocessed L color channels by simply thresholding them. This helped me extract left and right lane lines in the challenge_video.
 
 ##### b. Gradients and thresholding
 
@@ -170,8 +168,9 @@ Here's a [link to my video result](./project_video.mp4)
 
 #### 1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Overall:
+##### Shortcomings of the current pipeline(s):
 
+* TBA TODO
 * differnet code for different scenarios
 * settings overfit to videos seen here
 * Using filtering but...
@@ -179,20 +178,30 @@ Overall:
 * no fallback to sliding window
 * 
 
-project_video:
-- no big issues, gradx of L space then sliding window then detect from prev, filtering with hist size 50
+##### a. Project Video:
 
-challenge_video:
-- left and rgith lane lines were extracted separately 
-- left combination of thresholds of tttthe l and s spaces
-- right: combination of threshold of l space and abs sobel of l space with threshold
-- after that same functionality as in project video.
+The project video did not present too big difficulties. I used the gradient in x direction of the L color channel, then used an initial sliding window run and the detection from previous fits within a certain margin took it from there. What was extremely useful was taking the average fit of the last 50 frames.
 
-harder chalenge.
-experiments with color spaces, but no real conclusion so far.
-problems: too much light , too little light, tight curves where lane lines often cannot even be seen, sometimes i see reflections of the car on the windshield
+##### b. Challenge Video:
+
+Was, as the name suggests, a little trickier. I ended up handling the left and right lane lines differently, extracting them with precisely chosen thresholds of the L and S channels and their gradients. To be exact:
+
+* Left line is a combination of the L and S spaces, thresholded
+* Right line is a combination of the thresholded L space and also the absolute sobel of the L space, again thresholded.
+
+When it comes to detecting lane line pixels I used the same approach as for the project video.
+
+##### c. Harder Challenge Video:
+
+This one was too tricky for now. Problems:
+
+* I experimented with color spaces, but had no real conclusion as to which ones would yield the best results
+* Too much light, too little light, and this is changing. Also probably a reason why toying with color spaces and thresholds did not lead anywhere.
+* Tight curves that often can't be seen.
+* Reflections of the car on the windshield
 
 
-* improvements: home-made video
+##### Possible improvements: 
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
+* Take a home-made video, test with that
+* TBA TODO
