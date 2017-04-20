@@ -29,7 +29,8 @@ The goals / steps of this project are the following:
 [undist_straight]: ./output_images/undistorted_straight_lines1.jpg
 [persp_thr]: ./output_images/straight_lines1_persp_thresholdedL.jpg
 [orig_with_lane]: ./output_images/test2_lane_orig.jpg
-[video1]: ./project_video__out.mp4 "Video"
+[video1]: ./project_video_final_out.mp4 "Project Video"
+[video2]: ./challenge_video_final_out.mp4 "Challenge Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
 ### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
@@ -160,7 +161,7 @@ I implemented this step in the function `def draw_lane_undistorted(undistd, left
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
-Here's a [link to my video result](./project_video.mp4)
+Here's a [link to my video result](./project_video_final_out.mp4), as well as to the result of the [challenge_video](./challenge_video_final_out.mp4)
 
 ---
 
