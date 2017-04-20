@@ -147,6 +147,7 @@ Overall:
 
 * differnet code for different scenarios
 * settings overfit to videos seen here
+* Using filtering but...
 * no sanity checks
 * no fallback to sliding window
 * 
