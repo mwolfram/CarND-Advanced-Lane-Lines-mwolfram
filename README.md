@@ -171,13 +171,9 @@ Here's a [link to my video result](./project_video_final_out.mp4), as well as to
 
 ##### Shortcomings of the current pipeline(s):
 
-* TBA TODO
-* differnet code for different scenarios
-* settings overfit to videos seen here
-* Using filtering but...
-* no sanity checks
-* no fallback to sliding window
-* 
+* Different pipelines used for different scenarios. There is no single pipeline that can handle both or even all three scenarios.
+* Settings are overfit to videos. In different lighting conditions or with different lane colors, we'd probably run into problems.
+* Filtering is used, however there's never a sanity check, mainly because the existing pipeline already worked nicely with the videos provided. Without a sanity check, I never decide to skip measurements or to fall back to sliding window.
 
 ##### a. Project Video:
 
@@ -201,8 +197,7 @@ This one was too tricky for now. Problems:
 * Tight curves that often can't be seen.
 * Reflections of the car on the windshield
 
-
 ##### Possible improvements: 
 
 * Take a home-made video, test with that
-* TBA TODO
+* Introduce sanity check (for example difference in curvatures of both lane lines)
