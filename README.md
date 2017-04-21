@@ -199,5 +199,5 @@ This one was too tricky for now. Problems:
 
 ##### Possible improvements: 
 
-* Take a home-made video, test with that
+* Take own video, test with that
 * Introduce sanity check (for example difference in curvatures of both lane lines)
