@@ -31,6 +31,7 @@ The goals / steps of this project are the following:
 [orig_with_lane]: ./output_images/test2_lane_orig.jpg
 [video1]: ./project_video_final_out.mp4 "Project Video"
 [video2]: ./challenge_video_final_out.mp4 "Challenge Video"
+[video3]: ./harder_challenge_video_final_out.mp4 "Harder Challenge Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
 ### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
@@ -161,7 +162,9 @@ I implemented this step in the function `def draw_lane_undistorted(undistd, left
 
 #### 1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (wobbly lines are ok but no catastrophic failures that would cause the car to drive off the road!).
 
-Here's a [link to my video result](./project_video_final_out.mp4), as well as to the result of the [challenge_video](./challenge_video_final_out.mp4)
+Here's a [link to my video result](./project_video_final_out.mp4), as well as to the result of the [challenge_video](./challenge_video_final_out.mp4).
+
+There is also a link to the [harder_challenge_video](./harder_challenge_video_final_out.mp4), however those results are not good enough and just meant to demonstrate the difficulties that the pipeline faces (also discussed below). For this video I used the same pipeline as for the project_video, with sliding window in every iteration and a history size of 10.
 
 ---
 
