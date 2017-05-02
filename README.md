@@ -1,7 +1,5 @@
 # CarND-Advanced-Lane-Lines-mwolfram
 
-
-
 ---
 
 **Advanced Lane Finding Project**
@@ -19,7 +17,8 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[sobel]: ./output_images/straight_lines1_sobel.jpg 
+[sobel]: ./output_images/straight_lines1_sobel.jpg
+[persp_combined]: ./output_images/straight_lines1_persp_combined.jpg
 [sw]: ./output_images/test2_sliding_window.jpg
 [persp]: ./output_images/straight_lines1_persp.jpg
 [thr]: ./output_images/straight_lines1_thresholdedL.jpg
@@ -27,7 +26,10 @@ The goals / steps of this project are the following:
 [persp_sobel]: ./output_images/straight_lines1_persp_sobel.jpg
 [dprev]: ./output_images/test2_detect_from_previous.jpg
 [undist_straight]: ./output_images/undistorted_straight_lines1.jpg
-[persp_thr]: ./output_images/straight_lines1_persp_thresholdedL.jpg
+[persp_thrL]: ./output_images/straight_lines1_persp_thresholdedL.jpg
+[persp_thrS]: ./output_images/straight_lines1_persp_thresholdedS.jpg
+[persp_thrY]: ./output_images/straight_lines1_persp_thresholdedY.jpg
+[persp_thrV]: ./output_images/straight_lines1_persp_thresholdedV.jpg
 [orig_with_lane]: ./output_images/test2_lane_orig.jpg
 [video1]: ./project_video_final_out.mp4 "Project Video"
 [video2]: ./challenge_video_final_out.mp4 "Challenge Video"
@@ -47,7 +49,7 @@ All Code is located in a Jupyter notebook located at ./pipeline.ipynb
 
 #### 1. Briefly state how you computed the camera matrix and distortion coefficients. Provide an example of a distortion corrected calibration image.
 
-I used the function provided in class. The implementation can be found in the Jupyter notebook in the function 
+I used the function provided in class. The implementation can be found in the Jupyter notebook in the function
 
 ```python
 def calibrate(nx, ny):
@@ -62,7 +64,7 @@ ret, mtx, dist, rvecs, tvecs = calibrate(9, 6)
 
 I start by preparing "object points", which will be the (x, y, z) coordinates of the chessboard corners in the world. Here I am assuming the chessboard is fixed on the (x, y) plane at z=0, such that the object points are the same for each calibration image.  Thus, `objp` is just a replicated array of coordinates, and `objpoints` will be appended with a copy of it every time I successfully detect all chessboard corners in a test image.  `imgpoints` will be appended with the (x, y) pixel position of each of the corners in the image plane with each successful chessboard detection.  
 
-I then used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to a test image using the `cv2.undistort()` function and obtained this result: 
+I then used the output `objpoints` and `imgpoints` to compute the camera calibration and distortion coefficients using the `cv2.calibrateCamera()` function.  I applied this distortion correction to a test image using the `cv2.undistort()` function and obtained this result:
 
 ![Undistorted test image][undist_calib]
 *Undistorted test image*
@@ -83,11 +85,11 @@ To demonstrate this step, I will describe how I apply the distortion correction 
 
 #### 2. Describe how (and identify where in your code) you used color transforms, gradients or other methods to create a thresholded binary image.  Provide an example of a binary image result.
 
-At the beginning of my jupyter notebook, I load a toolkit that offers all these operations. 
+At the beginning of my jupyter notebook, I load a toolkit that offers all these operations.
 
 ##### a. Color Transforms:
 
-For example the functions `H(img)`, `L(img)` and `S(img)` provide greyscale representations of the 3 channels in the HLS color space. I used the `L(img)` function before passing an image to the sobel filter. Also I postprocessed L color channels by simply thresholding them. This helped me extract left and right lane lines in the challenge_video.
+For example the functions `H(img)`, `L(img)` and `S(img)` provide greyscale representations of the 3 channels in the HLS color space. I used the `L(img)` and `S(img)` functions before passing an image to the sobel filter. Also I postprocessed color channels by thresholding them. This helped me extract left and right lane lines in the challenge_video. Thresholding Y and V channels from YUV also helped to stabilize the detection in the project video.
 
 ##### b. Gradients and thresholding
 
@@ -103,7 +105,7 @@ I have an implementation of all techniques described in the course in the jupyte
 
 The code for my perspective transform includes a function called `perspective_transform()`, which takes as inputs an image (`img`). The source and destination points are set on top of the jupyter notebook in the global config. These parameters are called `SRC_TF` and `DST_TF`. I chose the hardcode the source and destination points in the following manner:
 
-```python 
+```python
 # Configuration
 SRC_TF = np.float32([ [262.0, 680.0], [1042.0, 680.0], [701.0, 460.0], [580.0, 460.0] ])
 DST_TF = np.float32([ [262.0, 720.0], [1042.0, 720.0], [1042.0, 0.0], [262.0, 0.0] ])
@@ -117,14 +119,26 @@ I verified that my perspective transform was working as expected by drawing the 
 ![Straight lines image warped to birds-eye view, after applying sobel][persp_sobel]
 *Straight lines image warped to birds-eye view, after applying sobel*
 
-![Straight lines image warped to birds-eye view, after applying threshold on L channel][persp_thr]
+![Straight lines image warped to birds-eye view, after applying threshold on L channel][persp_thrL]
 *Straight lines image warped to birds-eye view, after applying threshold on L channel*
+
+![Straight lines image warped to birds-eye view, after applying threshold on S channel][persp_thrS]
+*Straight lines image warped to birds-eye view, after applying threshold on S channel*
+
+![Straight lines image warped to birds-eye view, after applying threshold on Y channel][persp_thrY]
+*Straight lines image warped to birds-eye view, after applying threshold on Y channel*
+
+![Straight lines image warped to birds-eye view, after applying threshold on V channel][persp_thrV]
+*Straight lines image warped to birds-eye view, after applying threshold on V channel*
+
+![Straight lines image warped to birds-eye view, with the combined L and S channels gradients as well as Y and V][persp_combined]
+*Straight lines image warped to birds-eye view, with the combined L and S channels gradients as well as Y and V*
 
 For the inverse transformation I use the function `inverse_perspective_transform`
 
 #### 4. Describe how (and identify where in your code) you identified lane-line pixels and fit their positions with a polynomial?
 
-I used the code suggested in class. I had a sliding window approach `def sliding_window(binary_warped, histogram=None):` for initially identifying lane line pixels (based on a histogram of the lower half of the image) and also a second approach `def detect_from_previous(binary_warped, left_fit, right_fit):` that used existing polynomials to search lane line pixels in a specific area. 
+I used the code suggested in class. I had a sliding window approach `def sliding_window(binary_warped, histogram=None):` for initially identifying lane line pixels (based on a histogram of the lower half of the image) and also a second approach `def detect_from_previous(binary_warped, left_fit, right_fit):` that used existing polynomials to search lane line pixels in a specific area.
 
 The lane line pixels that were identified, were then used to fit 2nd order polynomials. Those were reported as lane lines and also fed to a filter that averaged over polynomials over several frames.
 
@@ -138,7 +152,7 @@ The following two images show the results of both types of calculations.
 
 #### 5. Describe how (and identify where in your code) you calculated the radius of curvature of the lane and the position of the vehicle with respect to center.
 
-These two calculations happen in `def measure_curvature(fit, img):`and in `lane_offset(left_fit, right_fit, img):`. The curvature calculation is taken from the course. I apply the following function to convert from polynomial coefficients to radius: 
+These two calculations happen in `def measure_curvature(fit, img):`and in `lane_offset(left_fit, right_fit, img):`. The curvature calculation is taken from the course. I apply the following function to convert from polynomial coefficients to radius:
 
 ```python
 px_curverad = ((1 + (2*fit[0]*y_eval + fit[1])**2)**1.5) / np.absolute(2*fit[0])
@@ -163,6 +177,12 @@ I implemented this step in the function `def draw_lane_undistorted(undistd, left
 
 Here's a [link to my video result](./project_video_final_out.mp4), as well as to the result of the [challenge_video](./challenge_video_final_out.mp4)
 
+#### 2. Filtering / Sanity Checks
+
+To keep false detections from disturbing the detection result, there's a history of fits that is populated over time and averaged. This average is used in case the current measurement has to be discarded, but also to make the detection smoother.
+
+Sanity checking is now performed by comparing the current fit with the history (this all happens in ```def process_image_video1(image):```). The highest index parameter of the fit turned out to be a good indicator for differences between curvatures, here I assume that a 15% difference is acceptable. Anything above that will invalidate the current measurement. In this case it's discarded and the current average is used instead. Also, there's a confidence field in the ```Line``` class. This value is decreased every time we discard a measurement and once it hits zero, both lines are reset and we start with a fresh sliding_window run.
+
 ---
 
 ### Discussion
@@ -173,11 +193,10 @@ Here's a [link to my video result](./project_video_final_out.mp4), as well as to
 
 * Different pipelines used for different scenarios. There is no single pipeline that can handle both or even all three scenarios.
 * Settings are overfit to videos. In different lighting conditions or with different lane colors, we'd probably run into problems.
-* Filtering is used, however there's never a sanity check, mainly because the existing pipeline already worked nicely with the videos provided. Without a sanity check, I never decide to skip measurements or to fall back to sliding window.
 
 ##### a. Project Video:
 
-The project video did not present too big difficulties. I used the gradient in x direction of the L color channel, then used an initial sliding window run and the detection from previous fits within a certain margin took it from there. What was extremely useful was taking the average fit of the last 50 frames.
+For the project video I used the gradient in x direction of the L and S color channels, as well as a combination of thresholded Y and V channels. Then I used an initial sliding window run and the detection from previous fits within a certain margin took it from there. In some rare cases the algorithm will fall back to sliding_window, but most of the time we keep detecting using the previous fits. What was extremely useful was taking the average fit of the last 10 frames.
 
 ##### b. Challenge Video:
 
@@ -197,7 +216,8 @@ This one was too tricky for now. Problems:
 * Tight curves that often can't be seen.
 * Reflections of the car on the windshield
 
-##### Possible improvements: 
+##### Possible improvements:
 
 * Take own video, test with that
-* Introduce sanity check (for example difference in curvatures of both lane lines)
+* For the harder challenge video, a lot more experimentation with color spaces and thresholds.
+* Also for the harder challenge video, we need a way to handle curves where we only see one lane line.
