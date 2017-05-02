@@ -184,7 +184,7 @@ There is also a link to the [harder_challenge_video](./harder_challenge_video_fi
 
 To keep false detections from disturbing the detection result, there's a history of fits that is populated over time and averaged. This average is used in case the current measurement has to be discarded, but also to make the detection smoother.
 
-Sanity checking is now performed by comparing the current fit with the history (this all happens in ```def process_image_video1(image):```). The highest index parameter of the fit turned out to be a good indicator for differences between curvatures, here I assume that a 15% difference is acceptable. Anything above that will invalidate the current measurement. In this case it's discarded and the current average is used instead. Also, there's a confidence field in the ```Line``` class. This value is decreased every time we discard a measurement and once it hits zero, both lines are reset and we start with a fresh sliding_window run.
+Sanity checking is now performed by comparing the current fit with the history (this all happens in ```def process_image_video1(image):```). The highest index coefficient of the fit turned out to be a good indicator for significant differences between curvatures, here I assume that a 15% difference is acceptable. Anything above that will invalidate the current measurement. In this case it's discarded and the current average is used instead. Also, there's a confidence field in the ```Line``` class. This value is decreased every time we discard a measurement and once it hits zero, both lines are reset and we start with a fresh sliding_window run.
 
 ---
 
